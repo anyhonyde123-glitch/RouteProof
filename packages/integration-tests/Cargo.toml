@@ -1,0 +1,18 @@
+[package]
+name = "routeproof-integration-tests"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dev-dependencies]
+soroban-sdk = { workspace = true, features = ["testutils"] }
+organization-registry = { path = "../../contracts/organization-registry" }
+shipment = { path = "../../contracts/shipment" }
+shipment-factory = { path = "../../contracts/shipment-factory" }
+handoff-proof = { path = "../../contracts/handoff-proof" }
+inspection = { path = "../../contracts/inspection" }
+settlement = { path = "../../contracts/settlement" }
+
+[[test]]
+name = "protocol"
+path = "tests/protocol.rs"
