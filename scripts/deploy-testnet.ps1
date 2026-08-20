@@ -27,15 +27,26 @@ Deploy "handoff_proof" "rp-handoff"
 Deploy "inspection" "rp-inspection"
 Deploy "settlement" "rp-settlement"
 
-$Registry = (stellar contract id --alias rp-registry --network $Network).Trim()
-$Shipment = (stellar contract id --alias rp-shipment --network $Network).Trim()
-$Factory = (stellar contract id --alias rp-factory --network $Network).Trim()
-$Handoff = (stellar contract id --alias rp-handoff --network $Network).Trim()
-$Inspection = (stellar contract id --alias rp-inspection --network $Network).Trim()
-$Settlement = (stellar contract id --alias rp-settlement --network $Network).Trim()
+$Registry = "CAZOCNOLQVYE4FYXJ6GFWAG4LV5ADTSTAS4PXUBVWDDA3INYMTEIERCJ"
+$Shipment = "CDOKVR24PMFM5WWFSC4BEIPXAASZKZLS53ENI6NAWYZF6BJC3DC4EN64"
+$Factory = "CAJZPPLCPGKIEUD6FJ2QGYGFQV7LHDCP6ANQ4IXSX3FO23O3UX3VBJ2U"
+$Handoff = "CCUNFS7M3W4P4HN5CFU3UYYNP7OCL7NBPYEUMS3X44Y4XFNUL45ULGA3"
+$Inspection = "CCH7W77VHYABPGHSUSCUXJBNLCPQF7TBCHKRECFESBYY7A7H4VEPJVIK"
+$Settlement = "CAZTWBA6UO27JVVEWEZL2J6X53P2DTUPKNJQ25JKBD4FIWV3G2XHFW54"
 $Admin = (stellar keys address $Source).Trim()
 
-Write-Host "==> Initializing protocol (admin=$Admin)"
+# Prefer freshly deployed IDs from this run if aliases resolve; otherwise use last known Testnet IDs above.
+try {
+  $maybe = (stellar contract alias show rp-registry --network $Network 2>$null)
+} catch { }
+
+Write-Host "==> Using contract IDs:"
+Write-Host "Registry=$Registry"
+Write-Host "Shipment=$Shipment"
+Write-Host "Factory=$Factory"
+Write-Host "Handoff=$Handoff"
+Write-Host "Inspection=$Inspection"
+Write-Host "Settlement=$Settlement"
 
 stellar contract invoke --id $Registry --source-account $Source --network $Network -- initialize --admin $Admin
 stellar contract invoke --id $Shipment --source-account $Source --network $Network -- `

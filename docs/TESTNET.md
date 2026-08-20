@@ -25,6 +25,7 @@ Admin / deployer: `GC5VBHY5DWV7NTL4PCQL3XGOE4FY2DJHM2JYLRC6YS2IHYTPDZ4DOFIU`
 | Deploy handoff | `fb2718439bd6a40eca60a3546a9fcb8f74b0fc36eb3d4fe9a3cb6b7bc4a77a43` | [view](https://stellar.expert/explorer/testnet/tx/fb2718439bd6a40eca60a3546a9fcb8f74b0fc36eb3d4fe9a3cb6b7bc4a77a43) |
 | Deploy inspection | `a9bd164c15d97b4048515d563a78b1f0ad92c0715d16e78d6748719c9c4ae729` | [view](https://stellar.expert/explorer/testnet/tx/a9bd164c15d97b4048515d563a78b1f0ad92c0715d16e78d6748719c9c4ae729) |
 | Deploy settlement | `ce26a990ab4b10f0b3bd8000d6ba67ae5c30dc5ab4c23db17001481394a56f6a` | [view](https://stellar.expert/explorer/testnet/tx/ce26a990ab4b10f0b3bd8000d6ba67ae5c30dc5ab4c23db17001481394a56f6a) |
+| Register org (live interaction) | `bc714f6a99ea80dd59fff5457f588f3ce472c58d4dafd319dcae3da4372560e4` | [view](https://stellar.expert/explorer/testnet/tx/bc714f6a99ea80dd59fff5457f588f3ce472c58d4dafd319dcae3da4372560e4) |
 
 ## Reproduce
 
