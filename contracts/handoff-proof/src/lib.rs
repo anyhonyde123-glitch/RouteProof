@@ -77,6 +77,9 @@ impl HandoffProof {
                 if from_party != shipment.carrier || to_party != shipment.warehouse {
                     panic_with_error!(&env, Error::InvalidParties);
                 }
+                if actor != shipment.carrier {
+                    panic_with_error!(&env, Error::Unauthorized);
+                }
                 ShipmentStatus::WarehouseReceived
             }
             STAGE_TO_INSPECTOR => {
@@ -85,6 +88,9 @@ impl HandoffProof {
                 }
                 if from_party != shipment.warehouse || to_party != shipment.inspector {
                     panic_with_error!(&env, Error::InvalidParties);
+                }
+                if actor != shipment.warehouse {
+                    panic_with_error!(&env, Error::Unauthorized);
                 }
                 ShipmentStatus::InspectionPending
             }
@@ -98,6 +104,9 @@ impl HandoffProof {
                 if from_party != shipment.warehouse && from_party != shipment.inspector {
                     panic_with_error!(&env, Error::InvalidParties);
                 }
+                if actor != from_party {
+                    panic_with_error!(&env, Error::Unauthorized);
+                }
                 ShipmentStatus::OutForDelivery
             }
             STAGE_TO_RECEIVER => {
@@ -106,6 +115,9 @@ impl HandoffProof {
                 }
                 if from_party != shipment.carrier || to_party != shipment.receiver {
                     panic_with_error!(&env, Error::InvalidParties);
+                }
+                if actor != shipment.carrier {
+                    panic_with_error!(&env, Error::Unauthorized);
                 }
                 ShipmentStatus::Delivered
             }

@@ -7,37 +7,80 @@ export class ConfigurationError extends Error {
 
 export class SorobanContractError extends Error {
   code?: number;
+  source?: ContractErrorSource;
 
-  constructor(message: string, code?: number) {
+  constructor(message: string, code?: number, source?: ContractErrorSource) {
     super(message);
     this.name = "SorobanContractError";
     this.code = code;
+    this.source = source;
   }
 }
 
-const CONTRACT_ERROR_MAP: Record<number, string> = {
+export type ContractErrorSource =
+  | "registry"
+  | "shipment"
+  | "factory"
+  | "handoff"
+  | "inspection"
+  | "settlement";
+
+const SHARED_ERROR_MAP: Record<number, string> = {
   1: "The protocol has not been initialized yet.",
   2: "This contract is already initialized.",
-  3: "You are not authorized to perform this action.",
-  4: "Shipment not found on chain.",
-  5: "Invalid status transition for this shipment.",
-  6: "Account is not a participant in this shipment.",
-  7: "Shipment status does not allow this action.",
-  8: "Handoff record not found.",
-  9: "Organization not found in the registry.",
-  10: "Organization already registered.",
-  11: "Missing required organization role.",
-  12: "Invalid handoff stage.",
-  13: "Handoff parties do not match the shipment route.",
-  14: "A handoff for this stage was already recorded.",
-  15: "Inspection record not found.",
-  16: "Inspection already approved for this shipment.",
-  17: "Settlement already completed.",
-  18: "Invalid sender organization.",
-  19: "Invalid carrier organization.",
-  20: "Invalid warehouse organization.",
-  21: "Invalid inspector organization.",
-  22: "Invalid receiver organization.",
+};
+
+const CONTRACT_ERROR_MAPS: Record<
+  ContractErrorSource,
+  Record<number, string>
+> = {
+  registry: {
+    ...SHARED_ERROR_MAP,
+    3: "Organization not found in the registry.",
+    4: "Organization already registered.",
+    5: "The account is missing a required organization role.",
+    6: "Organization is inactive.",
+    7: "You are not authorized to perform this action.",
+  },
+  shipment: {
+    ...SHARED_ERROR_MAP,
+    3: "You are not authorized to perform this action.",
+    4: "Shipment not found on chain.",
+    5: "This status change is not allowed for the current shipment state.",
+    6: "Account is not a participant in this shipment.",
+    7: "Shipment status does not allow this action.",
+  },
+  factory: {
+    ...SHARED_ERROR_MAP,
+    3: "You are not authorized to perform this action.",
+    4: "Sender organization is missing the sender role.",
+    5: "Carrier organization is missing the carrier role.",
+    6: "Warehouse organization is missing the warehouse role.",
+    7: "Inspector organization is missing the inspector role.",
+    8: "Receiver organization is missing the receiver role.",
+  },
+  handoff: {
+    ...SHARED_ERROR_MAP,
+    3: "You are not authorized to perform this action.",
+    4: "Invalid handoff stage.",
+    5: "Handoff parties do not match the shipment route.",
+    6: "Shipment status does not allow this action.",
+    7: "A handoff for this stage was already recorded.",
+    8: "Handoff record not found.",
+  },
+  inspection: {
+    ...SHARED_ERROR_MAP,
+    3: "You are not authorized to perform this action.",
+    4: "Shipment status does not allow this action.",
+    5: "Inspection already approved for this shipment.",
+    6: "No inspection record exists for this shipment.",
+  },
+  settlement: {
+    ...SHARED_ERROR_MAP,
+    3: "You are not authorized to perform this action.",
+    4: "Shipment status does not allow this action.",
+    5: "Settlement was already completed for this shipment.",
+  },
 };
 
 const MESSAGE_PATTERNS: Array<{ pattern: RegExp; message: string }> = [
@@ -66,7 +109,7 @@ const MESSAGE_PATTERNS: Array<{ pattern: RegExp; message: string }> = [
     message: "This organization is already registered.",
   },
   {
-    pattern: /missing role/i,
+    pattern: /missing role|invalid (sender|carrier|warehouse|inspector|receiver)/i,
     message: "The account is missing a required organization role.",
   },
   {
@@ -93,22 +136,37 @@ const MESSAGE_PATTERNS: Array<{ pattern: RegExp; message: string }> = [
 
 function extractContractCode(raw: string): number | undefined {
   const match =
+    raw.match(/Error\(Contract,\s*#(\d+)\)/i) ??
     raw.match(/contract error #(\d+)/i) ??
-    raw.match(/error\s*[:=]?\s*(\d+)/i) ??
-    raw.match(/#(\d+)/);
+    raw.match(/error\s*[:=]?\s*(\d+)/i);
   if (!match) return undefined;
   const code = Number(match[1]);
   return Number.isFinite(code) ? code : undefined;
 }
 
-export function humanizeSorobanError(error: unknown): string {
+function mapContractError(
+  code: number,
+  source?: ContractErrorSource,
+): string | undefined {
+  if (source) {
+    return CONTRACT_ERROR_MAPS[source][code];
+  }
+  return SHARED_ERROR_MAP[code];
+}
+
+export function humanizeSorobanError(
+  error: unknown,
+  source?: ContractErrorSource,
+): string {
   if (error instanceof ConfigurationError) {
     return error.message;
   }
 
   if (error instanceof SorobanContractError) {
-    if (error.code && CONTRACT_ERROR_MAP[error.code]) {
-      return CONTRACT_ERROR_MAP[error.code];
+    const resolvedSource = error.source ?? source;
+    if (error.code !== undefined) {
+      const mapped = mapContractError(error.code, resolvedSource);
+      if (mapped) return mapped;
     }
     return error.message;
   }
@@ -121,8 +179,9 @@ export function humanizeSorobanError(error: unknown): string {
         : "An unexpected error occurred.";
 
   const code = extractContractCode(raw);
-  if (code && CONTRACT_ERROR_MAP[code]) {
-    return CONTRACT_ERROR_MAP[code];
+  if (code !== undefined) {
+    const mapped = mapContractError(code, source);
+    if (mapped) return mapped;
   }
 
   for (const { pattern, message } of MESSAGE_PATTERNS) {
@@ -136,9 +195,12 @@ export function humanizeSorobanError(error: unknown): string {
   return raw;
 }
 
-export function wrapSorobanError(error: unknown): SorobanContractError {
-  const message = humanizeSorobanError(error);
+export function wrapSorobanError(
+  error: unknown,
+  source?: ContractErrorSource,
+): SorobanContractError {
   const raw = error instanceof Error ? error.message : String(error);
   const code = extractContractCode(raw);
-  return new SorobanContractError(message, code);
+  const message = humanizeSorobanError(error, source);
+  return new SorobanContractError(message, code, source);
 }

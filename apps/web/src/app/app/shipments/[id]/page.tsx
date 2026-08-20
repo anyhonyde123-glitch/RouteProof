@@ -44,16 +44,37 @@ export default async function ShipmentDetailPage({ params }: PageProps) {
     );
   }
 
-  const shipment = await getShipment(id);
+  let shipment;
+  try {
+    shipment = await getShipment(id);
+  } catch {
+    return (
+      <AppShell>
+        <ConfigErrorState message="Unable to load shipment from Soroban. Check RPC connectivity and contract IDs." />
+      </AppShell>
+    );
+  }
+
   if (!shipment) {
     notFound();
   }
 
-  const [handoffs, inspection, settlement] = await Promise.all([
-    getHandoffsForShipment(id),
-    getLatestInspection(id),
-    getSettlement(id),
-  ]);
+  let handoffs;
+  let inspection;
+  let settlement;
+  try {
+    [handoffs, inspection, settlement] = await Promise.all([
+      getHandoffsForShipment(id),
+      getLatestInspection(id),
+      getSettlement(id),
+    ]);
+  } catch {
+    return (
+      <AppShell>
+        <ConfigErrorState message="Unable to load shipment timeline from Soroban. Check RPC connectivity." />
+      </AppShell>
+    );
+  }
 
   const timeline = buildShipmentTimeline({
     shipment,

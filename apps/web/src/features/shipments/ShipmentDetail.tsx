@@ -23,6 +23,7 @@ import {
 } from "@/lib/format";
 import type { HandoffRecord, Shipment } from "@/lib/types";
 import { useShipmentActions } from "@/hooks/useShipmentActions";
+import { useWallet } from "@/hooks/useWallet";
 
 const iconForType = {
   status: Package,
@@ -97,6 +98,7 @@ export function CustodyTimeline({
 }
 
 export function ShipmentActionsPanel({ shipment }: { shipment: Shipment }) {
+  const { publicKey } = useWallet();
   const { markInTransit, recordHandoff, submitInspection, settle, loading } =
     useShipmentActions();
   const [handoffOpen, setHandoffOpen] = useState(false);
@@ -126,7 +128,13 @@ export function ShipmentActionsPanel({ shipment }: { shipment: Shipment }) {
       case HANDOFF_STAGE.ToInspector:
         return { from: shipment.warehouse, to: shipment.inspector };
       case HANDOFF_STAGE.ToDelivery:
-        return { from: shipment.warehouse, to: shipment.carrier };
+        return {
+          from:
+            publicKey === shipment.inspector
+              ? shipment.inspector
+              : shipment.warehouse,
+          to: shipment.carrier,
+        };
       case HANDOFF_STAGE.ToReceiver:
         return { from: shipment.carrier, to: shipment.receiver };
       default:

@@ -43,6 +43,27 @@ impl ShipmentContract {
         );
     }
 
+    /// Admin-only: rewire protocol contract addresses after a sibling redeploy.
+    pub fn set_protocol(
+        env: Env,
+        registry: Address,
+        factory: Address,
+        handoff: Address,
+        inspection: Address,
+        settlement: Address,
+    ) {
+        let mut config = storage::get_config(&env).unwrap_or_else(|| {
+            panic_with_error!(&env, Error::NotInitialized);
+        });
+        config.admin.require_auth();
+        config.registry = registry;
+        config.factory = factory;
+        config.handoff = handoff;
+        config.inspection = inspection;
+        config.settlement = settlement;
+        storage::set_config(&env, &config);
+    }
+
     #[allow(clippy::too_many_arguments)]
     pub fn create_shipment(
         env: Env,

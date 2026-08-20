@@ -203,6 +203,33 @@ fn unauthorized_actor_fails() {
 }
 
 #[test]
+#[should_panic(expected = "Error(Contract, #3)")]
+fn unauthorized_transit_actor_fails() {
+    let env = Env::default();
+    let p = setup(&env);
+    let stranger = Address::generate(&env);
+
+    p.handoff.record_handoff(
+        &p.sender,
+        &p.shipment_id,
+        &p.sender,
+        &p.carrier,
+        &STAGE_PICKUP,
+        &String::from_str(&env, "p1"),
+    );
+    p.shipment.mark_in_transit(&p.carrier, &p.shipment_id);
+
+    p.handoff.record_handoff(
+        &stranger,
+        &p.shipment_id,
+        &p.carrier,
+        &p.warehouse,
+        &STAGE_TRANSIT_TO_WAREHOUSE,
+        &String::from_str(&env, "bad-transit"),
+    );
+}
+
+#[test]
 #[should_panic(expected = "Error(Contract, #5)")]
 fn invalid_parties_fails() {
     let env = Env::default();

@@ -31,8 +31,8 @@ export default function OrganizationsPage() {
               Register organization
             </h2>
             <p className="mt-1 text-sm text-slate-muted">
-              Requires Freighter signature. Assign sender, carrier, warehouse,
-              inspector, and/or receiver roles.
+              Requires the registry admin Freighter account. Assign sender,
+              carrier, warehouse, inspector, and/or receiver roles.
             </p>
             <div className="mt-6">
               <RegisterOrgForm />

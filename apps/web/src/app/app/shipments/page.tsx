@@ -15,7 +15,16 @@ export default async function ShipmentsPage() {
     );
   }
 
-  const shipments = await listShipments(100);
+  let shipments;
+  try {
+    shipments = await listShipments(100);
+  } catch {
+    return (
+      <AppShell>
+        <ConfigErrorState message="Unable to load shipments from Soroban. Check RPC connectivity and contract IDs." />
+      </AppShell>
+    );
+  }
 
   return (
     <AppShell>

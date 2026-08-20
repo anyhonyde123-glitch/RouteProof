@@ -13,32 +13,29 @@ stellar contract build
 
 $Wasm = Join-Path $Root "target\wasm32v1-none\release"
 
+function Get-ContractId([string]$Alias) {
+  $id = (stellar contract id $Alias --network $Network 2>$null)
+  if (-not $id) {
+    throw "Failed to resolve contract ID for alias '$Alias' on $Network"
+  }
+  return $id.Trim()
+}
+
 function Deploy([string]$WasmName, [string]$Alias) {
   $path = Join-Path $Wasm "$WasmName.wasm"
   if (-not (Test-Path $path)) { throw "Missing $path" }
-  Write-Host "--> Deploying $Alias"
-  stellar contract deploy --wasm $path --source-account $Source --network $Network --alias $Alias
+  Write-Host "--> Deploying $Alias ($WasmName)"
+  stellar contract deploy --wasm $path --source-account $Source --network $Network --alias $Alias | Out-Host
+  return Get-ContractId $Alias
 }
 
-Deploy "organization_registry" "rp-registry"
-Deploy "shipment" "rp-shipment"
-Deploy "shipment_factory" "rp-factory"
-Deploy "handoff_proof" "rp-handoff"
-Deploy "inspection" "rp-inspection"
-Deploy "settlement" "rp-settlement"
-
-$Registry = "CAZOCNOLQVYE4FYXJ6GFWAG4LV5ADTSTAS4PXUBVWDDA3INYMTEIERCJ"
-$Shipment = "CDOKVR24PMFM5WWFSC4BEIPXAASZKZLS53ENI6NAWYZF6BJC3DC4EN64"
-$Factory = "CAJZPPLCPGKIEUD6FJ2QGYGFQV7LHDCP6ANQ4IXSX3FO23O3UX3VBJ2U"
-$Handoff = "CCUNFS7M3W4P4HN5CFU3UYYNP7OCL7NBPYEUMS3X44Y4XFNUL45ULGA3"
-$Inspection = "CCH7W77VHYABPGHSUSCUXJBNLCPQF7TBCHKRECFESBYY7A7H4VEPJVIK"
-$Settlement = "CAZTWBA6UO27JVVEWEZL2J6X53P2DTUPKNJQ25JKBD4FIWV3G2XHFW54"
+$Registry = Deploy "organization_registry" "rp-registry"
+$Shipment = Deploy "shipment" "rp-shipment"
+$Factory = Deploy "shipment_factory" "rp-factory"
+$Handoff = Deploy "handoff_proof" "rp-handoff"
+$Inspection = Deploy "inspection" "rp-inspection"
+$Settlement = Deploy "settlement" "rp-settlement"
 $Admin = (stellar keys address $Source).Trim()
-
-# Prefer freshly deployed IDs from this run if aliases resolve; otherwise use last known Testnet IDs above.
-try {
-  $maybe = (stellar contract alias show rp-registry --network $Network 2>$null)
-} catch { }
 
 Write-Host "==> Using contract IDs:"
 Write-Host "Registry=$Registry"
@@ -48,6 +45,7 @@ Write-Host "Handoff=$Handoff"
 Write-Host "Inspection=$Inspection"
 Write-Host "Settlement=$Settlement"
 
+Write-Host "==> Initializing protocol graph"
 stellar contract invoke --id $Registry --source-account $Source --network $Network -- initialize --admin $Admin
 stellar contract invoke --id $Shipment --source-account $Source --network $Network -- `
   initialize --admin $Admin --registry $Registry --factory $Factory --handoff $Handoff --inspection $Inspection --settlement $Settlement
@@ -74,9 +72,4 @@ NEXT_PUBLIC_SETTLEMENT_ID=$Settlement
 "@ | Set-Content -Path $EnvOut -Encoding UTF8
 
 Write-Host "==> Wrote $EnvOut"
-Write-Host "REGISTRY=$Registry"
-Write-Host "SHIPMENT=$Shipment"
-Write-Host "FACTORY=$Factory"
-Write-Host "HANDOFF=$Handoff"
-Write-Host "INSPECTION=$Inspection"
-Write-Host "SETTLEMENT=$Settlement"
+Write-Host "Copy to apps\web\.env.local and update docs/TESTNET.md with the new contract IDs."

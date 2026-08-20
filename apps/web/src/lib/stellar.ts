@@ -14,7 +14,24 @@ import {
   getContractEnv,
   NULL_ACCOUNT,
 } from "./constants";
-import { ConfigurationError, wrapSorobanError } from "./errors";
+import {
+  ConfigurationError,
+  type ContractErrorSource,
+  wrapSorobanError,
+} from "./errors";
+
+function resolveErrorSource(contractId: string): ContractErrorSource | undefined {
+  const env = getContractEnv();
+  if (!env) return undefined;
+
+  if (contractId === env.registryId) return "registry";
+  if (contractId === env.shipmentId) return "shipment";
+  if (contractId === env.factoryId) return "factory";
+  if (contractId === env.handoffId) return "handoff";
+  if (contractId === env.inspectionId) return "inspection";
+  if (contractId === env.settlementId) return "settlement";
+  return undefined;
+}
 
 export function getNetworkPassphrase(): string {
   const env = getContractEnv();
@@ -75,7 +92,7 @@ export async function simulateContract<T>(
     }
     return fromScVal<T>(simulated.result.retval);
   } catch (error) {
-    throw wrapSorobanError(error);
+    throw wrapSorobanError(error, resolveErrorSource(contractId));
   }
 }
 
@@ -133,7 +150,7 @@ export async function invokeContract(
 
     return null;
   } catch (error) {
-    throw wrapSorobanError(error);
+    throw wrapSorobanError(error, resolveErrorSource(contractId));
   }
 }
 

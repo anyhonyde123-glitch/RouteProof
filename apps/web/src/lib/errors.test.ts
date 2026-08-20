@@ -12,8 +12,8 @@ describe("errors", () => {
     expect(humanizeSorobanError(error)).toBe("Missing contract IDs");
   });
 
-  it("maps contract error codes", () => {
-    const error = new SorobanContractError("raw", 3);
+  it("maps contract-specific error codes", () => {
+    const error = new SorobanContractError("raw", 3, "shipment");
     expect(humanizeSorobanError(error)).toBe(
       "You are not authorized to perform this action.",
     );
@@ -28,13 +28,17 @@ describe("errors", () => {
     );
   });
 
-  it("wraps unknown errors", () => {
-    const wrapped = wrapSorobanError(new Error("contract error #5"));
+  it("wraps errors with contract source", () => {
+    const wrapped = wrapSorobanError(
+      new Error("Error(Contract, #5)"),
+      "handoff",
+    );
     expect(wrapped).toBeInstanceOf(SorobanContractError);
     expect(wrapped.message).toBe(
-      "Invalid status transition for this shipment.",
+      "Handoff parties do not match the shipment route.",
     );
     expect(wrapped.code).toBe(5);
+    expect(wrapped.source).toBe("handoff");
   });
 
   it("truncates very long raw errors", () => {

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import {
   BarChart3,
@@ -11,8 +12,19 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { ConnectWalletButton } from "@/features/wallet/ConnectWalletButton";
 
+const ConnectWalletButton = dynamic(
+  () =>
+    import("@/features/wallet/ConnectWalletButton").then(
+      (m) => m.ConnectWalletButton,
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-9 w-28 animate-pulse rounded-lg bg-slate-800/80" />
+    ),
+  },
+);
 const navItems = [
   { href: "/app", label: "Dashboard", icon: LayoutDashboard },
   { href: "/app/shipments", label: "Shipments", icon: Package },

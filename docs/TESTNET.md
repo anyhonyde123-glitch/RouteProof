@@ -4,33 +4,29 @@ Network: **Testnet**
 Passphrase: `Test SDF Network ; September 2015`  
 Admin / deployer: `GC5VBHY5DWV7NTL4PCQL3XGOE4FY2DJHM2JYLRC6YS2IHYTPDZ4DOFIU`
 
-## Contract addresses
+## Contract addresses (current)
 
 | Contract | Address |
 | --- | --- |
-| Organization Registry | `CAZOCNOLQVYE4FYXJ6GFWAG4LV5ADTSTAS4PXUBVWDDA3INYMTEIERCJ` |
-| Shipment | `CDOKVR24PMFM5WWFSC4BEIPXAASZKZLS53ENI6NAWYZF6BJC3DC4EN64` |
-| Shipment Factory | `CAJZPPLCPGKIEUD6FJ2QGYGFQV7LHDCP6ANQ4IXSX3FO23O3UX3VBJ2U` |
-| Handoff Proof | `CCUNFS7M3W4P4HN5CFU3UYYNP7OCL7NBPYEUMS3X44Y4XFNUL45ULGA3` |
-| Inspection | `CCH7W77VHYABPGHSUSCUXJBNLCPQF7TBCHKRECFESBYY7A7H4VEPJVIK` |
-| Settlement | `CAZTWBA6UO27JVVEWEZL2J6X53P2DTUPKNJQ25JKBD4FIWV3G2XHFW54` |
+| Organization Registry | `CBEXUO3HHZPXW53ASP7YVSPKHE2VJ22ZSIDUKEWWYOSOQNC6VRSE6GG3` |
+| Shipment | `CASDW56YOVZVLKGG6XOK5S7YZS6VUQCJ6TA24OE22NP2SKFIDSSACYCH` |
+| Shipment Factory | `CAB4GA22LSWQ3SMEWLCTQLYVQNG36MPCZIT4Z4OREGHBCZJK57ZUK22L` |
+| Handoff Proof | `CC6GQZELGLUQTL3LD3QQ4ZGDQH5DHRLHXRWTXA5EGZWWPDI3FDKK4P2W` |
+| Inspection | `CDKYWMFYXYRS5YLPEWMTILU26ZFSC66L2BHINVWWZQB5GYGIOIOKLKYA` |
+| Settlement | `CCNK2HTS7OVGMA32HP6JVSMIWMB4XSX2OHKUA45FLRWZWV2HPGF7KIA7` |
 
-## Real deploy transaction hashes
+## Real transaction hashes
 
 | Step | Tx hash | Explorer |
 | --- | --- | --- |
-| Deploy registry | `f51ec89b0c79a180b5f0de4c144a1ca73e5a1574d8beafb93fb02ec829ee44a2` | [view](https://stellar.expert/explorer/testnet/tx/f51ec89b0c79a180b5f0de4c144a1ca73e5a1574d8beafb93fb02ec829ee44a2) |
-| Deploy shipment | `e9eab77be710710ff35b1f5a7b4e1cda57dfa733ffd99a1a659b25ede65f755e` | [view](https://stellar.expert/explorer/testnet/tx/e9eab77be710710ff35b1f5a7b4e1cda57dfa733ffd99a1a659b25ede65f755e) |
-| Deploy factory | `3f35c67fd989e5c90a4431d0e0484c4f328a9aa0da0d927bc0380baac5aaaa5f` | [view](https://stellar.expert/explorer/testnet/tx/3f35c67fd989e5c90a4431d0e0484c4f328a9aa0da0d927bc0380baac5aaaa5f) |
-| Deploy handoff | `fb2718439bd6a40eca60a3546a9fcb8f74b0fc36eb3d4fe9a3cb6b7bc4a77a43` | [view](https://stellar.expert/explorer/testnet/tx/fb2718439bd6a40eca60a3546a9fcb8f74b0fc36eb3d4fe9a3cb6b7bc4a77a43) |
-| Deploy inspection | `a9bd164c15d97b4048515d563a78b1f0ad92c0715d16e78d6748719c9c4ae729` | [view](https://stellar.expert/explorer/testnet/tx/a9bd164c15d97b4048515d563a78b1f0ad92c0715d16e78d6748719c9c4ae729) |
-| Deploy settlement | `ce26a990ab4b10f0b3bd8000d6ba67ae5c30dc5ab4c23db17001481394a56f6a` | [view](https://stellar.expert/explorer/testnet/tx/ce26a990ab4b10f0b3bd8000d6ba67ae5c30dc5ab4c23db17001481394a56f6a) |
-| Register org (live interaction) | `bc714f6a99ea80dd59fff5457f588f3ce472c58d4dafd319dcae3da4372560e4` | [view](https://stellar.expert/explorer/testnet/tx/bc714f6a99ea80dd59fff5457f588f3ce472c58d4dafd319dcae3da4372560e4) |
+| Deploy registry | `8b9aea54f4c918dcb7d0244daa4aa76ea42aa8fd43564d1a1c8aa5e8e86d73d0` | [view](https://stellar.expert/explorer/testnet/tx/8b9aea54f4c918dcb7d0244daa4aa76ea42aa8fd43564d1a1c8aa5e8e86d73d0) |
+| Deploy shipment | `c3292ea339899418d0b5154f56570ae85f976fdde79b196af057e99f2b8286de` | [view](https://stellar.expert/explorer/testnet/tx/c3292ea339899418d0b5154f56570ae85f976fdde79b196af057e99f2b8286de) |
+| Deploy factory | `d8e8da0c9a82b6b9804826dd2b614780cc84f46212eef50557f0207a38c34f73` | [view](https://stellar.expert/explorer/testnet/tx/d8e8da0c9a82b6b9804826dd2b614780cc84f46212eef50557f0207a38c34f73) |
+| Register org (live) | `4cdac45aa84b8c7cab36b1cf4bd818971267a5115e89909b18479820d3b381e4` | [view](https://stellar.expert/explorer/testnet/tx/4cdac45aa84b8c7cab36b1cf4bd818971267a5115e89909b18479820d3b381e4) |
 
 ## Reproduce
 
 ```powershell
 .\scripts\deploy-testnet.ps1
+Copy-Item apps\web\.env.local.generated apps\web\.env.local
 ```
-
-Copy generated env into `apps/web/.env.local`.
