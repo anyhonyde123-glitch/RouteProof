@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  contracts:
+    name: Smart Contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32v1-none
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+      - name: Format
+        run: cargo fmt --all -- --check
+      - name: Clippy
+        run: |
+          cargo clippy -p organization-registry -p shipment -p shipment-factory \
+            -p handoff-proof -p inspection -p settlement --lib -- -D warnings
+      - name: Unit tests
+        run: |
+          cargo test -p organization-registry -p shipment -p shipment-factory \
+            -p handoff-proof -p inspection -p settlement --lib
+      - name: Integration tests
+        run: cargo test -p routeproof-integration-tests
+      - name: Build WASM
+        run: |
+          cargo build --release --target wasm32v1-none \
+            -p organization-registry -p shipment -p shipment-factory \
+            -p handoff-proof -p inspection -p settlement
+          ls -la target/wasm32v1-none/release/*.wasm
+
+  frontend:
+    name: Frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_STELLAR_NETWORK: testnet
