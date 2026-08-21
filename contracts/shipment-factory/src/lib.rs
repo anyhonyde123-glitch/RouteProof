@@ -11,9 +11,7 @@ mod types;
 pub use errors::Error;
 pub use types::FactoryConfig;
 
-use crate::types::{
-    ROLE_CARRIER, ROLE_INSPECTOR, ROLE_RECEIVER, ROLE_SENDER, ROLE_WAREHOUSE,
-};
+use crate::types::{ROLE_CARRIER, ROLE_INSPECTOR, ROLE_RECEIVER, ROLE_SENDER, ROLE_WAREHOUSE};
 use soroban_sdk::{contract, contractimpl, panic_with_error, Address, Env, String};
 
 #[contract]

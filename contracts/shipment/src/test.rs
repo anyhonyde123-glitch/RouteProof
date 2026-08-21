@@ -27,11 +27,7 @@ fn setup(env: &Env) -> (Address, Address, ShipmentContractClient<'static>) {
     (factory, handoff, client)
 }
 
-fn create_sample_shipment(
-    env: &Env,
-    client: &ShipmentContractClient,
-    factory: &Address,
-) -> u64 {
+fn create_sample_shipment(env: &Env, client: &ShipmentContractClient, factory: &Address) -> u64 {
     let creator = Address::generate(env);
     let sender = Address::generate(env);
     let carrier = Address::generate(env);
@@ -94,12 +90,7 @@ fn mark_in_transit_and_advance_status() {
     let carrier = shipment.carrier.clone();
     let sender = shipment.sender.clone();
 
-    client.advance_status(
-        &handoff,
-        &id,
-        &(ShipmentStatus::PickedUp as u32),
-        &sender,
-    );
+    client.advance_status(&handoff, &id, &(ShipmentStatus::PickedUp as u32), &sender);
     assert_eq!(client.get_status(&id), ShipmentStatus::PickedUp);
 
     client.mark_in_transit(&carrier, &id);

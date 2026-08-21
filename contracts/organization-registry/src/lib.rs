@@ -6,7 +6,9 @@ mod storage;
 mod types;
 
 pub use errors::Error;
-pub use types::{OrgProfile, DataKey, ROLE_CARRIER, ROLE_INSPECTOR, ROLE_RECEIVER, ROLE_SENDER, ROLE_WAREHOUSE};
+pub use types::{
+    DataKey, OrgProfile, ROLE_CARRIER, ROLE_INSPECTOR, ROLE_RECEIVER, ROLE_SENDER, ROLE_WAREHOUSE,
+};
 
 use soroban_sdk::{contract, contractimpl, panic_with_error, Address, Env, String};
 

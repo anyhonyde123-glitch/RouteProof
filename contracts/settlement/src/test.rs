@@ -7,8 +7,8 @@ use handoff_proof::{
 };
 use inspection::{InspectionContract, InspectionContractClient};
 use organization_registry::{
-    OrganizationRegistry, OrganizationRegistryClient, ROLE_CARRIER, ROLE_INSPECTOR,
-    ROLE_RECEIVER, ROLE_SENDER, ROLE_WAREHOUSE,
+    OrganizationRegistry, OrganizationRegistryClient, ROLE_CARRIER, ROLE_INSPECTOR, ROLE_RECEIVER,
+    ROLE_SENDER, ROLE_WAREHOUSE,
 };
 use shipment::{ShipmentContract, ShipmentContractClient, ShipmentStatus};
 use shipment_factory::{ShipmentFactory, ShipmentFactoryClient};

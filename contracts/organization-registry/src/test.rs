@@ -18,11 +18,7 @@ fn initialize_and_register_org() {
     let (admin, client) = setup(&env);
 
     let sender = Address::generate(&env);
-    client.register(
-        &sender,
-        &String::from_str(&env, "SenderCo"),
-        &ROLE_SENDER,
-    );
+    client.register(&sender, &String::from_str(&env, "SenderCo"), &ROLE_SENDER);
 
     let profile = client.get_org(&sender).unwrap();
     assert_eq!(profile.name, String::from_str(&env, "SenderCo"));
@@ -70,11 +66,7 @@ fn add_roles_and_admin_controls() {
     let (_, client) = setup(&env);
 
     let account = Address::generate(&env);
-    client.register(
-        &account,
-        &String::from_str(&env, "MultiCo"),
-        &ROLE_SENDER,
-    );
+    client.register(&account, &String::from_str(&env, "MultiCo"), &ROLE_SENDER);
     client.add_roles(&account, &ROLE_CARRIER);
 
     assert!(client.has_role(&account, &ROLE_SENDER));
@@ -95,16 +87,8 @@ fn duplicate_registration_fails() {
     let (_, client) = setup(&env);
 
     let account = Address::generate(&env);
-    client.register(
-        &account,
-        &String::from_str(&env, "DupCo"),
-        &ROLE_WAREHOUSE,
-    );
-    client.register(
-        &account,
-        &String::from_str(&env, "DupCo2"),
-        &ROLE_WAREHOUSE,
-    );
+    client.register(&account, &String::from_str(&env, "DupCo"), &ROLE_WAREHOUSE);
+    client.register(&account, &String::from_str(&env, "DupCo2"), &ROLE_WAREHOUSE);
 }
 
 #[test]

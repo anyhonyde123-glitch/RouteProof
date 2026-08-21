@@ -4,8 +4,8 @@ use handoff_proof::{
 };
 use inspection::{InspectionContract, InspectionContractClient};
 use organization_registry::{
-    OrganizationRegistry, OrganizationRegistryClient, ROLE_CARRIER, ROLE_INSPECTOR,
-    ROLE_RECEIVER, ROLE_SENDER, ROLE_WAREHOUSE,
+    OrganizationRegistry, OrganizationRegistryClient, ROLE_CARRIER, ROLE_INSPECTOR, ROLE_RECEIVER,
+    ROLE_SENDER, ROLE_WAREHOUSE,
 };
 use settlement::{SettlementContract, SettlementContractClient};
 use shipment::{ShipmentContract, ShipmentContractClient, ShipmentStatus};
@@ -71,11 +71,7 @@ fn deploy_protocol(env: &Env) -> RouteProofProtocol<'_> {
     let receiver = Address::generate(env);
     let creator = Address::generate(env);
 
-    registry.register(
-        &sender,
-        &String::from_str(env, "Acme Sender"),
-        &ROLE_SENDER,
-    );
+    registry.register(&sender, &String::from_str(env, "Acme Sender"), &ROLE_SENDER);
     registry.register(
         &carrier,
         &String::from_str(env, "FastCarrier"),
@@ -143,10 +139,16 @@ fn full_c2c_lifecycle() {
         &STAGE_PICKUP,
         &String::from_str(&env, "proof:pickup-signature"),
     );
-    assert_eq!(p.shipment.get_status(&shipment_id), ShipmentStatus::PickedUp);
+    assert_eq!(
+        p.shipment.get_status(&shipment_id),
+        ShipmentStatus::PickedUp
+    );
 
     p.shipment.mark_in_transit(&p.carrier, &shipment_id);
-    assert_eq!(p.shipment.get_status(&shipment_id), ShipmentStatus::InTransit);
+    assert_eq!(
+        p.shipment.get_status(&shipment_id),
+        ShipmentStatus::InTransit
+    );
 
     p.handoff.record_handoff(
         &p.carrier,
@@ -181,7 +183,10 @@ fn full_c2c_lifecycle() {
         &String::from_str(&env, "notes:passed"),
     );
     assert_eq!(inspection_id, 1);
-    assert_eq!(p.shipment.get_status(&shipment_id), ShipmentStatus::Inspected);
+    assert_eq!(
+        p.shipment.get_status(&shipment_id),
+        ShipmentStatus::Inspected
+    );
 
     p.handoff.record_handoff(
         &p.inspector,
@@ -204,10 +209,16 @@ fn full_c2c_lifecycle() {
         &STAGE_TO_RECEIVER,
         &String::from_str(&env, "proof:delivered"),
     );
-    assert_eq!(p.shipment.get_status(&shipment_id), ShipmentStatus::Delivered);
+    assert_eq!(
+        p.shipment.get_status(&shipment_id),
+        ShipmentStatus::Delivered
+    );
 
     p.settlement.complete(&p.receiver, &shipment_id);
-    assert_eq!(p.shipment.get_status(&shipment_id), ShipmentStatus::Completed);
+    assert_eq!(
+        p.shipment.get_status(&shipment_id),
+        ShipmentStatus::Completed
+    );
 
     assert_eq!(p.handoff.handoffs_for_shipment_count(&shipment_id), 5);
     assert!(p.settlement.get_settlement(&shipment_id).is_some());
@@ -274,5 +285,8 @@ fn inspection_rejection_then_resubmit_lifecycle() {
         &true,
         &String::from_str(&env, "pass:repaired"),
     );
-    assert_eq!(p.shipment.get_status(&shipment_id), ShipmentStatus::Inspected);
+    assert_eq!(
+        p.shipment.get_status(&shipment_id),
+        ShipmentStatus::Inspected
+    );
 }

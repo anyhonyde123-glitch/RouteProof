@@ -22,10 +22,7 @@ impl SettlementContract {
             panic_with_error!(&env, Error::AlreadyInitialized);
         }
         admin.require_auth();
-        storage::set_config(
-            &env,
-            &types::SettlementConfig { admin, shipment },
-        );
+        storage::set_config(&env, &types::SettlementConfig { admin, shipment });
     }
 
     pub fn complete(env: Env, actor: Address, shipment_id: u64) {

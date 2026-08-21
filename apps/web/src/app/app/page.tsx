@@ -1,3 +1,4 @@
+import { LiveRefresh } from "@/components/LiveRefresh";
 import { AppShell } from "@/components/layout/AppShell";
 import { ConfigErrorState, EmptyState } from "@/components/ui/EmptyState";
 import { ShipmentCard } from "@/features/shipments/ShipmentList";
@@ -26,13 +27,16 @@ export default async function DashboardPage() {
     return (
       <AppShell>
         <div className="space-y-8">
-          <div>
-            <h1 className="font-display text-3xl font-bold text-white">
-              Dashboard
-            </h1>
-            <p className="mt-2 text-slate-muted">
-              Live metrics from on-chain shipment and handoff contracts.
-            </p>
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <h1 className="font-display text-3xl font-bold text-white">
+                Dashboard
+              </h1>
+              <p className="mt-2 text-slate-muted">
+                Live metrics from on-chain shipment and handoff contracts.
+              </p>
+            </div>
+            <LiveRefresh label="Dashboard" />
           </div>
           <StatsGrid stats={stats} />
           <section>

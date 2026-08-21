@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LiveRefresh } from "@/components/LiveRefresh";
 import { AppShell } from "@/components/layout/AppShell";
 import { Button } from "@/components/ui/Button";
 import { ConfigErrorState, EmptyState } from "@/components/ui/EmptyState";
@@ -38,9 +39,12 @@ export default async function ShipmentsPage() {
               All shipments indexed from the on-chain factory.
             </p>
           </div>
-          <Link href="/app/shipments/new">
-            <Button>Create shipment</Button>
-          </Link>
+          <div className="flex flex-wrap items-center gap-3">
+            <LiveRefresh label="Shipments" />
+            <Link href="/app/shipments/new">
+              <Button>Create shipment</Button>
+            </Link>
+          </div>
         </div>
         {shipments.length === 0 ? (
           <EmptyState

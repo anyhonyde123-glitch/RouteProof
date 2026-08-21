@@ -18,7 +18,7 @@ function WalletMark({ id, accent }: { id: WalletId; accent: string }) {
 
   return (
     <span
-      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-sm font-bold text-white shadow-inner"
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-xs font-bold text-white shadow-inner"
       style={{ background: accent }}
       aria-hidden
     >
@@ -35,7 +35,7 @@ export function WalletPickerModal() {
       open={pickerOpen}
       onClose={closePicker}
       title="Connect wallet"
-      description="Choose Freighter, xBull, LOBSTR, or Albedo — then approve Testnet access."
+      description="Freighter · xBull · LOBSTR · Albedo — approve Testnet access."
       className="max-w-md"
     >
       <div className="space-y-2">
@@ -46,15 +46,17 @@ export function WalletPickerModal() {
             disabled={status === "connecting"}
             onClick={() => void connect(wallet.id)}
             className={cn(
-              "group flex w-full items-center gap-3 rounded-xl border border-slate-700/70 bg-navy-950/60 px-3 py-3 text-left transition",
+              "group flex w-full items-center gap-3 rounded-xl border border-slate-700/70 bg-navy-950/60 px-3 py-2.5 text-left transition",
               "hover:border-amber-brand/40 hover:bg-navy-950",
               "disabled:cursor-wait disabled:opacity-60",
             )}
           >
             <WalletMark id={wallet.id} accent={wallet.accent} />
             <span className="min-w-0 flex-1">
-              <span className="block font-medium text-white">{wallet.name}</span>
-              <span className="mt-0.5 block text-xs text-slate-muted">
+              <span className="block text-sm font-medium text-white">
+                {wallet.name}
+              </span>
+              <span className="mt-0.5 block text-[11px] leading-snug text-slate-muted">
                 {wallet.description}
               </span>
             </span>
@@ -63,7 +65,7 @@ export function WalletPickerModal() {
               target="_blank"
               rel="noreferrer"
               onClick={(event) => event.stopPropagation()}
-              className="rounded-lg p-2 text-slate-muted opacity-0 transition hover:bg-slate-800 hover:text-amber-brand group-hover:opacity-100"
+              className="rounded-lg p-2 text-slate-muted opacity-70 transition hover:bg-slate-800 hover:text-amber-brand sm:opacity-0 sm:group-hover:opacity-100"
               aria-label={`Install ${wallet.name}`}
               title="Install"
             >

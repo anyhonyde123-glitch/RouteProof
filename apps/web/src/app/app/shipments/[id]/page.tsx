@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { LiveRefresh } from "@/components/LiveRefresh";
 import { AppShell } from "@/components/layout/AppShell";
 import { Badge } from "@/components/ui/Badge";
 import { ConfigErrorState } from "@/components/ui/EmptyState";
@@ -102,9 +103,12 @@ export default async function ShipmentDetailPage({ params }: PageProps) {
                 {shipment.origin} → {shipment.destination}
               </p>
             </div>
-            <Badge variant={statusBadgeVariant(shipment.status)}>
-              {formatStatus(shipment.status)}
-            </Badge>
+            <div className="flex flex-col items-end gap-3">
+              <Badge variant={statusBadgeVariant(shipment.status)}>
+                {formatStatus(shipment.status)}
+              </Badge>
+              <LiveRefresh label="On-chain" />
+            </div>
           </div>
         </div>
 

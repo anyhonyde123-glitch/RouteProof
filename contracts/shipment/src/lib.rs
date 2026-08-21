@@ -7,7 +7,7 @@ mod storage;
 mod types;
 
 pub use errors::Error;
-pub use types::{Shipment, ShipmentConfig, ShipmentStatus, DataKey};
+pub use types::{DataKey, Shipment, ShipmentConfig, ShipmentStatus};
 
 use soroban_sdk::{contract, contractimpl, panic_with_error, Address, Env, String};
 

@@ -5,7 +5,16 @@ use organization_registry::{OrganizationRegistry, OrganizationRegistryClient};
 use shipment::{ShipmentContract, ShipmentContractClient};
 use soroban_sdk::{testutils::Address as _, Address, Env, String};
 
-fn setup(env: &Env) -> (ShipmentFactoryClient<'static>, Address, Address, Address, Address, Address) {
+fn setup(
+    env: &Env,
+) -> (
+    ShipmentFactoryClient<'static>,
+    Address,
+    Address,
+    Address,
+    Address,
+    Address,
+) {
     let admin = Address::generate(env);
 
     let registry_id = env.register(OrganizationRegistry, ());
@@ -57,14 +66,7 @@ fn setup(env: &Env) -> (ShipmentFactoryClient<'static>, Address, Address, Addres
         &ROLE_RECEIVER,
     );
 
-    (
-        factory,
-        sender,
-        carrier,
-        warehouse,
-        inspector,
-        receiver,
-    )
+    (factory, sender, carrier, warehouse, inspector, receiver)
 }
 
 #[test]

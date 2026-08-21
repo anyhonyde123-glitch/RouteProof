@@ -14,11 +14,9 @@ pub fn extend_instance_ttl(env: &Env) {
 }
 
 fn extend_persistent_ttl(env: &Env, key: &DataKey) {
-    env.storage().persistent().extend_ttl(
-        key,
-        PERSISTENT_TTL_THRESHOLD,
-        PERSISTENT_TTL_EXTEND_TO,
-    );
+    env.storage()
+        .persistent()
+        .extend_ttl(key, PERSISTENT_TTL_THRESHOLD, PERSISTENT_TTL_EXTEND_TO);
 }
 
 pub fn get_admin(env: &Env) -> Option<Address> {
@@ -31,7 +29,9 @@ pub fn set_admin(env: &Env, admin: &Address) {
 }
 
 pub fn get_org(env: &Env, account: &Address) -> Option<OrgProfile> {
-    env.storage().persistent().get(&DataKey::Org(account.clone()))
+    env.storage()
+        .persistent()
+        .get(&DataKey::Org(account.clone()))
 }
 
 pub fn set_org(env: &Env, profile: &OrgProfile) {

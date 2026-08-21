@@ -23,4 +23,6 @@ Thumbs.db
 *.swp
 *.log
 coverage/
-.env
+docs/screenshots/test-output.txt
+package-lock.json
+/package.json

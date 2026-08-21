@@ -14,11 +14,9 @@ pub fn extend_instance_ttl(env: &Env) {
 }
 
 fn extend_persistent_ttl(env: &Env, key: &DataKey) {
-    env.storage().persistent().extend_ttl(
-        key,
-        PERSISTENT_TTL_THRESHOLD,
-        PERSISTENT_TTL_EXTEND_TO,
-    );
+    env.storage()
+        .persistent()
+        .extend_ttl(key, PERSISTENT_TTL_THRESHOLD, PERSISTENT_TTL_EXTEND_TO);
 }
 
 pub fn get_config(env: &Env) -> Option<InspectionConfig> {
@@ -81,9 +79,7 @@ pub fn set_inspection(env: &Env, record: &InspectionRecord) {
     env.storage().persistent().set(&index_key, &record.id);
     extend_persistent_ttl(env, &index_key);
     let count_key = DataKey::InspectionCount(record.shipment_id);
-    env.storage()
-        .persistent()
-        .set(&count_key, &(count + 1));
+    env.storage().persistent().set(&count_key, &(count + 1));
     extend_persistent_ttl(env, &count_key);
 
     extend_instance_ttl(env);
