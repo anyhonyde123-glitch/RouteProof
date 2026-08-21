@@ -241,8 +241,6 @@ routeproof/
 | --- | --- |
 | ![CI](docs/screenshots/09-cicd-actions.png) | ![Tests](docs/screenshots/10-test-output.png) |
 
-> After the latest rustfmt fix lands on `main`, re-open Actions for the green run screenshot if judges expect a green badge in the image.
-
 ---
 
 ## Testnet deployment
