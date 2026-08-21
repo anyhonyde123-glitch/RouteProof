@@ -45,7 +45,7 @@ export default async function ShipmentsPage() {
         {shipments.length === 0 ? (
           <EmptyState
             title="No shipments on chain"
-            description="Register organizations, connect Freighter, and create your first shipment."
+            description="Register organizations, connect a wallet, and create your first shipment."
             actionLabel="Create shipment"
             actionHref="/app/shipments/new"
           />

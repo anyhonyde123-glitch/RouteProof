@@ -92,7 +92,7 @@ routeproof/
 - Rust stable + `wasm32v1-none`
 - [Stellar CLI](https://developers.stellar.org/docs/tools/cli) v25+
 - Node.js 22+
-- Freighter wallet (Testnet)
+- Freighter, xBull, LOBSTR, or Albedo wallet (Testnet)
 
 ```bash
 rustup target add wasm32v1-none
@@ -157,7 +157,7 @@ GitHub Actions runs on push/PR:
 
 ## Demo workflow (~90 seconds)
 
-1. Connect Freighter (Testnet)  
+1. Connect Freighter / xBull / LOBSTR / Albedo (Testnet)  
 2. Register organizations / roles  
 3. Create a shipment with five participants  
 4. Record Pickup → Transit → Warehouse → Inspection → Delivery handoffs  

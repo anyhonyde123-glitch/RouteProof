@@ -203,8 +203,8 @@ export default function LandingPage() {
                 Ready to anchor your next shipment?
               </p>
               <p className="mt-3 text-sm text-slate-muted">
-                Connect Freighter, configure deployed contract IDs, and manage
-                the full custody lifecycle from one dashboard.
+                Connect Freighter, xBull, LOBSTR, or Albedo, then manage the
+                full custody lifecycle against live Testnet contracts.
               </p>
               <Link href="/app" className="mt-6 inline-block">
                 <Button size="lg">Open RouteProof app</Button>

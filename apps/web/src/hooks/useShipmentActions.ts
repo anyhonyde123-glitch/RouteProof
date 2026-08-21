@@ -26,7 +26,7 @@ export function useShipmentActions() {
     if (publicKey) return publicKey;
     const address = await connect();
     if (!address) {
-      throw new Error("Connect Freighter to continue.");
+      throw new Error("Connect a wallet to continue.");
     }
     return address;
   }, [connect, publicKey]);

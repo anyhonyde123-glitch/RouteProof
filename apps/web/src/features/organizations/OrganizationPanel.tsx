@@ -45,7 +45,7 @@ export function RegisterOrgForm() {
     setLoading(true);
     try {
       const wallet = (await connect()) ?? "";
-      if (!wallet) throw new Error("Connect Freighter to register.");
+      if (!wallet) throw new Error("Connect a wallet to register.");
       await registerOrganization(
         { ...parsed.data, roles: parsed.data.roles as RoleFlag[] },
         wallet,

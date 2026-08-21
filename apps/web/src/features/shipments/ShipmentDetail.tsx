@@ -148,7 +148,7 @@ export function ShipmentActionsPanel({ shipment }: { shipment: Shipment }) {
         Shipment actions
       </h3>
       <p className="mt-1 text-sm text-slate-muted">
-        Actions invoke real Soroban contracts via Freighter.
+        Actions invoke real Soroban contracts via your connected wallet.
       </p>
       <div className="mt-4 flex flex-wrap gap-3">
         {shipment.status === SHIPMENT_STATUS.PickedUp ? (

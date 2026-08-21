@@ -31,7 +31,7 @@ export default function OrganizationsPage() {
               Register organization
             </h2>
             <p className="mt-1 text-sm text-slate-muted">
-              Requires the registry admin Freighter account. Assign sender,
+              Requires the registry admin wallet. Assign sender,
               carrier, warehouse, inspector, and/or receiver roles.
             </p>
             <div className="mt-6">

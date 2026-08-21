@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
     "sodium-native",
     "sodium-universal",
   ],
+  transpilePackages: [
+    "@albedo-link/intent",
+    "@creit.tech/xbull-wallet-connect",
+    "@lobstrco/signer-extension-api",
+  ],
 };
 
 export default nextConfig;
