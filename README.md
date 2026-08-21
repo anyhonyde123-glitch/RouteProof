@@ -10,7 +10,8 @@
 RouteProof is a production-style logistics custody dApp: organizations register roles, create shipments, record cryptographically verifiable handoffs, run inspections, and settle delivery — all on Soroban with a multi-wallet Next.js frontend.
 
 **Live demo:** https://web-sandy-one-51.vercel.app  
-**Repo:** https://github.com/anyhonyde123-glitch/RouteProof
+**Repo:** https://github.com/anyhonyde123-glitch/RouteProof  
+**Demo video:** [routeproof.mp4](https://drive.google.com/file/d/1bl_BypwaDtdBeGOcGQcDIgXiFUWeHZWf/view?usp=sharing)
 
 <p align="center">
   <img src="docs/screenshots/01-landing-desktop.png" alt="RouteProof landing page" width="900" />
@@ -352,7 +353,7 @@ flowchart LR
 6. Settle completion  
 7. Open `/verify/[id]` for the public custody timeline  
 
-**Demo video:** add your 1–2 minute Loom/YouTube link here after recording.
+**Demo video (1–2 min):** [routeproof.mp4 on Google Drive](https://drive.google.com/file/d/1bl_BypwaDtdBeGOcGQcDIgXiFUWeHZWf/view?usp=sharing)
 
 ---
 
@@ -363,17 +364,19 @@ flowchart LR
 | Public GitHub repo | ✅ |
 | README + docs | ✅ |
 | 10+ meaningful commits | ✅ (20+) |
-| Live demo (Vercel) | ✅ |
+| Live demo (Vercel) | ✅ https://web-sandy-one-51.vercel.app |
 | Contract addresses | ✅ |
 | Interaction tx hash | ✅ |
 | Mobile UI screenshots | ✅ |
 | CI/CD screenshots | ✅ |
 | Test output (3+ tests) | ✅ 36 passed |
-| Demo video 1–2 min | ⏳ record & paste link |
+| Demo video 1–2 min | ✅ [Drive link](https://drive.google.com/file/d/1bl_BypwaDtdBeGOcGQcDIgXiFUWeHZWf/view?usp=sharing) |
 | Advanced contracts + C2C | ✅ |
 | Events + live refresh | ✅ |
 | Error/loading states | ✅ |
 | Multi-wallet | ✅ |
+
+**Submission package is complete** — use August Challenge on the platform with the GitHub repo, Vercel URL, contract IDs / tx hashes from this README, screenshots under `docs/screenshots/`, and the demo video link above.
 
 ---
 
